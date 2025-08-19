@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Backyard Ultra Timer</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Backyard Ultra Timer</h1>
+        <div id="display" class="display">00:00:00</div>
+        <div class="stats">
+            <div class="stat">
+                <span class="label">Vuelta actual</span>
+                <span id="lap" class="value">1</span>
+            </div>
+            <div class="stat">
+                <span class="label">Vueltas completadas</span>
+                <span id="lapsCompleted" class="value">0</span>
+            </div>
+            <div class="stat">
+                <span class="label">Kilómetros</span>
+                <span id="kilometers" class="value">0.0</span>
+            </div>
+        </div>
+        <div class="controls">
+            <button id="startBtn">Iniciar</button>
+            <button id="stopBtn" disabled>Detener</button>
+            <button id="resetBtn" class="danger">Reiniciar</button>
+        </div>
+
+        <div class="guide">
+            <div class="panel">
+                <h2>Guía de alarmas (cada hora)</h2>
+                <ul class="alarm-list">
+                    <li><span class="t">57:00</span><span class="n">Bocina</span></li>
+                    <li><span class="t">58:00</span><span class="n">Alarma</span></li>
+                    <li><span class="t">59:00</span><span class="n">Alarma fuerte</span></li>
+                    <li><span class="t">59:49</span><span class="n">Multitud</span></li>
+                </ul>
+            </div>
+            <div class="panel next">
+                <div class="label">Próxima alarma</div>
+                <div id="nextAlarmName" class="value">—</div>
+                <div id="nextAlarmCountdown" class="sub">en 00:00:00</div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
