@@ -7,7 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Build outputs
-/dist/
+# /dist/  # Comentado para incluir dist/ en el repositorio
 /.vite/
 
 # Local env

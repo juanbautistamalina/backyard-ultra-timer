@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Backyard Ultra Timer</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon-CstntbzA.svg">
+    <link rel="alternate icon" href="/assets/favicon-CstntbzA.svg">
+    <link rel="mask-icon" href="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%20width='32'%20height='32'%3e%3cdefs%3e%3clinearGradient%20id='bg'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3e%3cstop%20offset='0%25'%20style='stop-color:%238B5CF6;stop-opacity:1'%20/%3e%3cstop%20offset='50%25'%20style='stop-color:%233B82F6;stop-opacity:1'%20/%3e%3cstop%20offset='100%25'%20style='stop-color:%2306B6D4;stop-opacity:1'%20/%3e%3c/linearGradient%3e%3clinearGradient%20id='glow'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3e%3cstop%20offset='0%25'%20style='stop-color:%23FBBF24;stop-opacity:1'%20/%3e%3cstop%20offset='100%25'%20style='stop-color:%23F59E0B;stop-opacity:1'%20/%3e%3c/linearGradient%3e%3c/defs%3e%3c!--%20Background%20circle%20--%3e%3ccircle%20cx='16'%20cy='16'%20r='15'%20fill='url(%23bg)'%20stroke='%231E40AF'%20stroke-width='1.5'/%3e%3c!--%20Clock%20face%20--%3e%3ccircle%20cx='16'%20cy='16'%20r='12'%20fill='none'%20stroke='%23FFFFFF'%20stroke-width='1.5'%20opacity='0.9'/%3e%3c!--%20Clock%20markers%20(12,%203,%206,%209)%20--%3e%3ccircle%20cx='16'%20cy='6'%20r='0.8'%20fill='url(%23glow)'/%3e%3ccircle%20cx='26'%20cy='16'%20r='0.8'%20fill='url(%23glow)'/%3e%3ccircle%20cx='16'%20cy='26'%20r='0.8'%20fill='url(%23glow)'/%3e%3ccircle%20cx='6'%20cy='16'%20r='0.8'%20fill='url(%23glow)'/%3e%3c!--%20Additional%20hour%20markers%20--%3e%3ccircle%20cx='21.3'%20cy='8.7'%20r='0.4'%20fill='%23FBBF24'%20opacity='0.8'/%3e%3ccircle%20cx='23.3'%20cy='10.7'%20r='0.4'%20fill='%23FBBF24'%20opacity='0.8'/%3e%3ccircle%20cx='23.3'%20cy='21.3'%20r='0.4'%20fill='%23FBBF24'%20opacity='0.8'/%3e%3ccircle%20cx='21.3'%20cy='23.3'%20r='0.4'%20fill='%23FBBF24'%20opacity='0.8'/%3e%3ccircle%20cx='10.7'%20cy='23.3'%20r='0.4'%20fill='%23FBBF24'%20opacity='0.8'/%3e%3ccircle%20cx='8.7'%20cy='21.3'%20r='0.4'%20fill='%23FBBF24'%20opacity='0.8'/%3e%3ccircle%20cx='8.7'%20cy='10.7'%20r='0.4'%20fill='%23FBBF24'%20opacity='0.8'/%3e%3ccircle%20cx='10.7'%20cy='8.7'%20r='0.4'%20fill='%23FBBF24'%20opacity='0.8'/%3e%3c!--%20Clock%20hands%20--%3e%3c!--%20Hour%20hand%20pointing%20to%203%20--%3e%3cline%20x1='16'%20y1='16'%20x2='21'%20y2='16'%20stroke='%23FFFFFF'%20stroke-width='1.2'%20stroke-linecap='round'/%3e%3cline%20x1='16'%20y1='16'%20x2='21'%20y2='16'%20stroke='url(%23glow)'%20stroke-width='0.8'%20stroke-linecap='round'/%3e%3c!--%20Minute%20hand%20pointing%20to%2012%20--%3e%3cline%20x1='16'%20y1='16'%20x2='16'%20y2='7'%20stroke='%23FFFFFF'%20stroke-width='1.2'%20stroke-linecap='round'/%3e%3cline%20x1='16'%20y1='16'%20x2='16'%20y2='7'%20stroke='url(%23glow)'%20stroke-width='0.8'%20stroke-linecap='round'/%3e%3c!--%20Center%20dot%20--%3e%3ccircle%20cx='16'%20cy='16'%20r='1.5'%20fill='url(%23glow)'%20stroke='%23FFFFFF'%20stroke-width='0.5'/%3e%3c/svg%3e" color="#FF6B35">
+  <script type="module" crossorigin src="/assets/index-DkYKJA19.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BAhWRjOR.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Backyard Ultra Timer</h1>
+        <div id="display" class="display">00:00:00</div>
+        <div class="stats">
+            <div class="stat">
+                <span class="label">Vuelta actual</span>
+                <span id="lap" class="value">1</span>
+            </div>
+            <div class="stat">
+                <span class="label">Vueltas completadas</span>
+                <span id="lapsCompleted" class="value">0</span>
+            </div>
+            <div class="stat">
+                <span class="label">Kilómetros</span>
+                <span id="kilometers" class="value">0.0</span>
+            </div>
+        </div>
+        <div class="controls">
+            <button id="startBtn">Iniciar</button>
+            <button id="stopBtn" disabled>Detener</button>
+            <button id="resetBtn" class="danger">Reiniciar</button>
+            <button id="testBtn" class="test">Test 56:00</button>
+        </div>
+
+        <div class="guide">
+            <div class="panel">
+                <h2>Guía de alarmas (cada hora)</h2>
+                <ul class="alarm-list">
+                    <li><span class="t">57:00</span><span class="n">Bocina</span></li>
+                    <li><span class="t">58:00</span><span class="n">Alarma</span></li>
+                    <li><span class="t">59:00</span><span class="n">Alarma fuerte</span></li>
+                    <li><span class="t">59:49</span><span class="n">Multitud</span></li>
+                </ul>
+            </div>
+            <div class="panel next">
+                <div class="label">Próxima alarma</div>
+                <div id="nextAlarmName" class="value">—</div>
+                <div id="nextAlarmCountdown" class="sub">en 00:00:00</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
