@@ -37,6 +37,7 @@ let schedulerIntervalId = null;
 let scheduledKeys = new Set();       // evita duplicados: `${hourIndex}:${key}`
 let audioCtxStartTime = 0;           // audioCtx.currentTime al (re)anclar
 let elapsedAtAudioCtxStart = 0;      // segundos transcurridos cuando se ancló el audio
+let lastPlayedTimes = new Map();     // Track last played times to prevent duplicates
 
 // UI refs
 const displayEl = document.getElementById('display');
@@ -46,12 +47,14 @@ const kmEl = document.getElementById('kilometers');
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
 const resetBtn = document.getElementById('resetBtn');
+const testBtn = document.getElementById('testBtn');
 const nextAlarmNameEl = document.getElementById('nextAlarmName');
 const nextAlarmCountdownEl = document.getElementById('nextAlarmCountdown');
 
 startBtn.addEventListener('click', start);
 stopBtn.addEventListener('click', stop);
 resetBtn.addEventListener('click', resetAll);
+testBtn.addEventListener('click', jumpTo56Minutes);
 
 function getElapsedMs() {
 	return isRunning
@@ -174,18 +177,64 @@ function scheduleInWindow() {
 			const minLead = 0.03;
 			if (whenCtx <= audioCtx.currentTime + minLead) continue;
 
-			const src = audioCtx.createBufferSource();
-			src.buffer = audioBuffers[key];
-			src.connect(audioCtx.destination);
-			src.start(whenCtx);
-			scheduledKeys.add(schedKey);
+			try {
+				// Check if we've already played this sound recently (within 1 second)
+				const lastPlayed = lastPlayedTimes.get(schedKey);
+				if (lastPlayed && Math.abs(eventTime - lastPlayed) < 1) {
+					continue;
+				}
+
+				const src = audioCtx.createBufferSource();
+				src.buffer = audioBuffers[key];
+				
+				// Add gain node for better control
+				const gainNode = audioCtx.createGain();
+				gainNode.gain.value = 0.9; // Good volume level
+				
+				src.connect(gainNode);
+				gainNode.connect(audioCtx.destination);
+				
+				// Add error handling and cleanup
+				src.onended = () => {
+					try {
+						src.disconnect();
+						gainNode.disconnect();
+					} catch (e) {
+						// Ignore disconnect errors
+					}
+				};
+				
+				// Handle scheduling errors
+				src.onerror = (error) => {
+					console.error(`Audio playback error for ${key}:`, error);
+				};
+				
+				src.start(whenCtx);
+				scheduledKeys.add(schedKey);
+				lastPlayedTimes.set(schedKey, eventTime);
+				
+				console.log(`✓ Scheduled ${key} for hour ${hourIdx} at ${eventTime}s (ctx: ${whenCtx.toFixed(3)})`);
+			} catch (error) {
+				console.error(`Failed to schedule ${key}:`, error);
+				// Try immediate fallback playback if scheduling fails
+				try {
+					const fallbackSrc = audioCtx.createBufferSource();
+					fallbackSrc.buffer = audioBuffers[key];
+					fallbackSrc.connect(audioCtx.destination);
+					fallbackSrc.start();
+					console.log(`🔄 Fallback immediate playback for ${key}`);
+				} catch (fallbackError) {
+					console.error(`Fallback also failed for ${key}:`, fallbackError);
+				}
+			}
 		}
 	}
 }
 
 function startScheduler() {
 	if (schedulerIntervalId) return;
-	schedulerIntervalId = setInterval(scheduleInWindow, 120);
+	// Reduce interval for more responsive scheduling
+	schedulerIntervalId = setInterval(scheduleInWindow, 50);
 }
 
 function stopScheduler() {
@@ -204,9 +253,15 @@ async function start() {
 	startBtn.disabled = true;
 	stopBtn.disabled = false;
 
+	// Ensure audio context is running
 	if (audioCtx.state === 'suspended') {
 		await audioCtx.resume();
 	}
+	
+	// Clear any old scheduled keys when restarting
+	scheduledKeys.clear();
+	lastPlayedTimes.clear();
+	
 	anchorAudioClock();
 	startScheduler();
 }
@@ -231,7 +286,38 @@ async function resetAll() {
 	startBtn.disabled = false;
 	stopBtn.disabled = true;
 	stopScheduler();
+	
+	// Clear scheduled keys to allow sounds to replay
+	scheduledKeys.clear();
+	lastPlayedTimes.clear();
+	
 	if (audioCtx && audioCtx.state === 'running') {
 		await audioCtx.suspend();
 	}
+}
+
+async function jumpTo56Minutes() {
+	// Set timer to 56:00 (56 minutes = 3360 seconds = 3,360,000 ms)
+	const targetMs = 56 * 60 * 1000;
+	
+	if (isRunning) {
+		// If running, adjust the start time to make elapsed time = 56:00
+		const now = performance.now();
+		perfStartMs = now - targetMs;
+		elapsedBeforePauseMs = 0;
+		
+		// Clear and reschedule audio
+		scheduledKeys.clear();
+		lastPlayedTimes.clear();
+		
+		if (audioCtx) {
+			anchorAudioClock();
+		}
+	} else {
+		// If stopped, set the elapsed time directly
+		elapsedBeforePauseMs = targetMs;
+		perfStartMs = 0;
+	}
+	
+	console.log('⏰ Timer jumped to 56:00 for testing');
 }
